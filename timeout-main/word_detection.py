@@ -301,15 +301,17 @@ class word_detection():
         self.result = b #최종 결과
         return b
 
+
+
 if __name__ =='__main__':
     import time
     a = word_detection()
     a.load_data()
     a.load_badword_data()
-    cutline = int(input("몇 %이상인 것만 출력할까요?"))
+    cutline = int(input("몇 %이상인 것만 출력할까요?: "))
     EXECUTION = 3
     while EXECUTION!=0:
-        a.input=input('필터링할 문장 입력!!')
+        a.input=input('필터링할 문장 입력: ')
         stime = time.time()
         a.text_modification()
         a.lime_compare(a.token_badwords , a.token_detach_text[0] , cutline/100,False)
