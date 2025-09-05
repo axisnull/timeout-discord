@@ -27,5 +27,5 @@
   - 타임아웃 적용 및 해제 시 채널에 로그 메시지 전송<br><br><br>
 
 ## 3. 활용한 오픈소스
-- 비속어 필터링: https://github.com/0-inf/badwordDetection  
+- 비속어 필터링: https://github.com/0-inf/KoreanBadwordDetection 
 - 타임아웃 기능: https://github.com/psm7177/timeout
