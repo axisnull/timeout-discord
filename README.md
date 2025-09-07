@@ -22,10 +22,17 @@
   ![타임아웃 기능](image/timeout.png)
   - 디스코드 봇 서버에 배포 후 이용
   - 채팅 중 비속어가 감지되면 해당 유저에게 자동으로 타임아웃을 적용<br><br>
+- **횟수 누적 시간 적용✍**
+  ![누적 시간](image/duration.png)
+  - 추가 기능
+  - 유저별 비속어 사용 횟수를 누적하여 타임아웃 시간 60초씩 증가<br><br>
 - **로그 메시지📝**  
   ![로그 메시지](image/message.png)
   - 타임아웃 적용 및 해제 시 채널에 로그 메시지 전송<br><br><br>
 
-## 3. 활용한 오픈소스
-- 비속어 필터링: https://github.com/0-inf/badwordDetection  
+## 3. Flow Chart
+<img src="image/flowChart.png" width="350" alt="시스템 흐름도"/><br><br><br>
+
+## 4. 활용한 오픈소스
+- 비속어 필터링: https://github.com/0-inf/KoreanBadwordDetection 
 - 타임아웃 기능: https://github.com/psm7177/timeout
