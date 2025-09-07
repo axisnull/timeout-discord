@@ -7,6 +7,7 @@ from word_detection import word_detection   #비속어 필터링
 a = word_detection()
 a.load_data()
 a.load_badword_data()
+TIMEOUT_COUNT = {}
 
 #비속어 필터링 함수
 def filter(message):
@@ -65,19 +66,30 @@ class Timeout:
         self.target_users = message.author  #타임아웃 대상 유저
         self.channel = message.channel      #메세지 작성 채널
         self.guild = message.guild          #메세지 작성 서버
+        
+        self.expire_at = None
 
-        self.expire_at = datetime.now(timezone.utc) + timedelta(seconds=60) #타임아웃 만료 시간(30초)
+    #타임아웃 누적 시간
+    def duration(self):
+        if self.target_users.id not in TIMEOUT_COUNT:
+            TIMEOUT_COUNT[self.target_users.id] = 0
+        TIMEOUT_COUNT[self.target_users.id] += 1
 
+        count = TIMEOUT_COUNT[self.target_users.id] #누적 횟수
+        duration = 60 * count       #누적 횟수에 따른 타임아웃 시간
+        return count, duration
 
     #타임아웃 활성화 기능
     async def execute_timeout(self):
         self.activated = False  #타임아웃 실행 상태
+        count, duration = self.duration()
 
         if self.target_users != self.bot.user:
-            until = self.expire_at  #타임아웃 활성 시간
+            until = datetime.now(timezone.utc) + timedelta(seconds=duration)  #타임아웃 활성 시간
+            self.expire_at = until  #만료시간 갱신 
             await self.target_users.timeout(until)  #타임아웃 적용
             #채널에 타임아웃 메세지 전송
-            self.feedback_message = await self.channel.send(f"{self.target_users.mention}에게 비속어 사용으로 인한 타임아웃을 적용합니다.")
+            self.feedback_message = await self.channel.send(f"{self.target_users.mention}에게 {count} 번째 비속어 사용으로 인한 {duration}초 타임아웃을 적용합니다.")
 
     #타임아웃 만료 기능
     async def expire(self):
@@ -91,7 +103,7 @@ class Timeout:
 
         else:
             return False        #시간이 남았음(타임아웃 실행 상태)
-
+    
 
 #봇이 서버에 접속할 때 발생하는 이벤트
 @bot.event
